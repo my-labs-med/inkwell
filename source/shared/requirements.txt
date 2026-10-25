@@ -1,0 +1,2 @@
+aws-xray-sdk>=2.14
+wrapt>=1.16
