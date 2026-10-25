@@ -1,0 +1,20 @@
+Inkwell — Serverless To-Do API on AWS
+Copyright 2026 Rebai Mohamed
+
+Licensed under the Apache License, Version 2.0 (the "License"). You may not use this project except
+in compliance with the License. A copy of the License is in the LICENSE file.
+
+**********************
+THIRD PARTY COMPONENTS
+**********************
+This project bundles the following third-party software:
+
+Fraunces (variable font) — SIL Open Font License 1.1
+  source/frontend/assets/fonts/fraunces-latin-wght-normal.woff2
+Newsreader (variable font) — SIL Open Font License 1.1
+  source/frontend/assets/fonts/newsreader-latin-wght-normal.woff2
+  source/frontend/assets/fonts/newsreader-latin-wght-italic.woff2
+
+The deployment build additionally packages, into the X-Ray Lambda layer:
+aws-xray-sdk — Apache License 2.0
+wrapt — BSD 2-Clause License
