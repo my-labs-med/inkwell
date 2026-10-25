@@ -1,0 +1,14 @@
+sender_email = "you@example.com"
+alert_email  = "you@example.com"
+
+# Addresses that may receive milestone emails while SES is in the sandbox.
+demo_recipient_emails = []
+
+# For the demo: lower milestones so emails fire on camera.
+# done_milestones = "1,3,5"
+
+# Demo the geo rule by blocking your own country, then remove it.
+# blocked_countries = ["TN"]
+
+# Switch on for the caching part of the demo (~$0.02/hour), then off again.
+# enable_api_cache = true
