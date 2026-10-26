@@ -19,14 +19,14 @@ mock_provider "aws" {
 
   mock_resource "aws_cognito_user_pool" {
     defaults = {
-      arn = "arn:aws:cognito-idp:us-east-1:123456789012:userpool/us-east-1_EXAMPLE"
-      id  = "us-east-1_EXAMPLE"
+      arn = "arn:aws:cognito-idp:eu-north-1:123456789012:userpool/eu-north-1_EXAMPLE"
+      id  = "eu-north-1_EXAMPLE"
     }
   }
 
   mock_resource "aws_sns_topic" {
     defaults = {
-      arn = "arn:aws:sns:us-east-1:123456789012:inkwell-alerts"
+      arn = "arn:aws:sns:eu-north-1:123456789012:inkwell-alerts"
     }
   }
 
@@ -38,45 +38,45 @@ mock_provider "aws" {
 
   mock_resource "aws_lambda_layer_version" {
     defaults = {
-      arn = "arn:aws:lambda:us-east-1:123456789012:layer:inkwell-xray-sdk:1"
+      arn = "arn:aws:lambda:eu-north-1:123456789012:layer:inkwell-xray-sdk:1"
     }
   }
 
   mock_resource "aws_sqs_queue" {
     defaults = {
-      arn = "arn:aws:sqs:us-east-1:123456789012:inkwell-stream-dlq"
+      arn = "arn:aws:sqs:eu-north-1:123456789012:inkwell-stream-dlq"
     }
   }
 
   mock_resource "aws_dynamodb_table" {
     defaults = {
-      arn        = "arn:aws:dynamodb:us-east-1:123456789012:table/inkwell-tasks"
-      stream_arn = "arn:aws:dynamodb:us-east-1:123456789012:table/inkwell-tasks/stream/2026-10-25T00:00:00.000"
+      arn        = "arn:aws:dynamodb:eu-north-1:123456789012:table/inkwell-tasks"
+      stream_arn = "arn:aws:dynamodb:eu-north-1:123456789012:table/inkwell-tasks/stream/2026-10-25T00:00:00.000"
     }
   }
 
   mock_resource "aws_cloudwatch_log_group" {
     defaults = {
-      arn = "arn:aws:logs:us-east-1:123456789012:log-group:/aws/lambda/inkwell"
+      arn = "arn:aws:logs:eu-north-1:123456789012:log-group:/aws/lambda/inkwell"
     }
   }
 
   mock_resource "aws_lambda_function" {
     defaults = {
-      arn        = "arn:aws:lambda:us-east-1:123456789012:function:inkwell"
-      invoke_arn = "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:123456789012:function:inkwell/invocations"
+      arn        = "arn:aws:lambda:eu-north-1:123456789012:function:inkwell"
+      invoke_arn = "arn:aws:apigateway:eu-north-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-north-1:123456789012:function:inkwell/invocations"
     }
   }
 
   mock_resource "aws_wafv2_web_acl" {
     defaults = {
-      arn = "arn:aws:wafv2:us-east-1:123456789012:global/webacl/inkwell/abc"
+      arn = "arn:aws:wafv2:eu-north-1:123456789012:regional/webacl/inkwell/abc"
     }
   }
 
   mock_resource "aws_api_gateway_stage" {
     defaults = {
-      arn = "arn:aws:apigateway:us-east-1::/restapis/a1b2c3d4e5/stages/prod"
+      arn = "arn:aws:apigateway:eu-north-1::/restapis/a1b2c3d4e5/stages/prod"
     }
   }
 
@@ -90,7 +90,17 @@ mock_provider "aws" {
   mock_resource "aws_api_gateway_rest_api" {
     defaults = {
       id            = "a1b2c3d4e5"
-      execution_arn = "arn:aws:execute-api:us-east-1:123456789012:a1b2c3d4e5"
+      execution_arn = "arn:aws:execute-api:eu-north-1:123456789012:a1b2c3d4e5"
+    }
+  }
+}
+
+mock_provider "aws" {
+  alias = "us_east_1"
+
+  mock_resource "aws_wafv2_web_acl" {
+    defaults = {
+      arn = "arn:aws:wafv2:us-east-1:123456789012:global/webacl/inkwell/abc"
     }
   }
 }
@@ -106,6 +116,11 @@ variables {
 
 run "defaults" {
   command = apply
+
+  assert {
+    condition     = aws_xray_sampling_rule.all.fixed_rate == 1 && aws_xray_sampling_rule.all.service_name == "inkwell-*"
+    error_message = "Every Inkwell request must be traced."
+  }
 
   assert {
     condition     = !contains(keys(aws_s3_object.site), "js/mock-api.js") && !contains(keys(aws_s3_object.site), "js/config.js")
@@ -143,7 +158,7 @@ run "defaults" {
   }
 
   assert {
-    condition     = aws_lambda_permission.api["update-task"].source_arn == "arn:aws:execute-api:us-east-1:123456789012:a1b2c3d4e5/*/PUT/api/tasks/*"
+    condition     = aws_lambda_permission.api["update-task"].source_arn == "arn:aws:execute-api:eu-north-1:123456789012:a1b2c3d4e5/*/PUT/api/tasks/*"
     error_message = "Lambda permission must cover the {id} path."
   }
 
@@ -207,12 +222,15 @@ run "demo_toggles" {
   }
 }
 
-run "rejects_other_regions" {
+run "follows_the_chosen_region" {
   command = plan
 
   variables {
     region = "eu-west-3"
   }
 
-  expect_failures = [var.region]
+  assert {
+    condition     = contains([for o in aws_cloudfront_distribution.site.origin : o.domain_name], "a1b2c3d4e5.execute-api.eu-west-3.amazonaws.com")
+    error_message = "The API origin must point at the chosen region."
+  }
 }

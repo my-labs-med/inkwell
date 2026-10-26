@@ -104,3 +104,17 @@ resource "aws_budgets_budget" "monthly" {
     subscriber_email_addresses = [var.alert_email]
   }
 }
+
+resource "aws_xray_sampling_rule" "all" {
+  rule_name      = "${local.name}-all"
+  priority       = 100
+  version        = 1
+  reservoir_size = 1
+  fixed_rate     = 1
+  service_name   = "${local.name}-*"
+  service_type   = "*"
+  host           = "*"
+  http_method    = "*"
+  url_path       = "*"
+  resource_arn   = "*"
+}

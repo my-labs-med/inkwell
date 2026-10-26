@@ -7,11 +7,12 @@ own tasks through API Gateway and AWS Lambda, with data in Amazon DynamoDB. A Dy
 keeps each user's streak and sends milestone emails through Amazon SES. The API is protected by AWS
 WAF, accelerated by CloudFront and API Gateway caching, and traced end-to-end with AWS X-Ray.
 
+**Live app:** https://dvbqb6alr9byb.cloudfront.net/
+
 ## Table of Contents
 
 - [Solution Overview](#solution-overview)
 - [Architecture Diagram](#architecture-diagram)
-- [Demo](#demo)
 - [AWS Services](#aws-services)
 - [API](#api)
 - [Data Model](#data-model)
@@ -43,12 +44,6 @@ completion becomes an ink dot on a 12-week calendar, and milestones (your first 
 6. **Lambda** runs the route's logic against the **DynamoDB** `tasks` table, scoped to the caller's user ID.
 7. **DynamoDB Streams** delivers each task change to the stream processor, which updates the `stats` table and sends milestone emails through **SES**.
 8. **X-Ray** traces API Gateway → Lambda → DynamoDB / SES / Cognito.
-
-# Demo
-
-[![Demo video](docs/demo-thumbnail.png)](#)
-
-*Video link to be added.*
 
 # AWS Services
 
@@ -125,8 +120,8 @@ Every request is a single `Query` or key lookup, never a `Scan`.
 │   ├── build-dist.sh            # packages the Lambda zips and the X-Ray layer
 │   └── run-unit-tests.sh        # lint + every test suite
 ├── docs/
+│   ├── architecture.drawio      # diagram source (draw.io)
 │   ├── architecture.png         # architecture diagram
-│   ├── demo-thumbnail.png       # video thumbnail
 │   └── screenshots/
 └── source/
     ├── shared/                  # inkwell package used by every Lambda

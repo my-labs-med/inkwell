@@ -5,14 +5,9 @@ variable "project_name" {
 }
 
 variable "region" {
-  description = "Must be us-east-1: the CloudFront web ACL lives there and the stack uses a single provider."
+  description = "Region for every regional resource. The CloudFront web ACL is always created in us-east-1."
   type        = string
-  default     = "us-east-1"
-
-  validation {
-    condition     = var.region == "us-east-1"
-    error_message = "This stack is single-region and must be deployed to us-east-1."
-  }
+  default     = "eu-north-1"
 }
 
 variable "sender_email" {

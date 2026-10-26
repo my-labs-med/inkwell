@@ -1,6 +1,6 @@
 # infrastructure
 
-Terraform for the whole stack, in `us-east-1`, with local state.
+Terraform for the whole stack, in `eu-north-1` (the CloudFront web ACL in `us-east-1`), with local state.
 
 | File | Creates |
 |---|---|

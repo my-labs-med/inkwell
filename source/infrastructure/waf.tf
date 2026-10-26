@@ -7,6 +7,8 @@ locals {
 }
 
 resource "aws_wafv2_web_acl" "edge" {
+  provider = aws.us_east_1
+
   name  = "${local.name}-edge"
   scope = "CLOUDFRONT"
 
