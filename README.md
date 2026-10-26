@@ -34,7 +34,7 @@ completion becomes an ink dot on a 12-week calendar, and milestones (your first 
 
 # Architecture Diagram
 
-![Architecture diagram](docs/architecture.png)
+![Architecture diagram](docs/inkwell-architecture.png)
 
 1. The user loads the static frontend from **S3** through **CloudFront**. Fonts and icons are cached for a year; HTML, CSS and JS for a short TTL.
 2. The user signs in with the **Cognito** Hosted UI (authorization code + PKCE) and receives a JWT.
@@ -120,8 +120,8 @@ Every request is a single `Query` or key lookup, never a `Scan`.
 │   ├── build-dist.sh            # packages the Lambda zips and the X-Ray layer
 │   └── run-unit-tests.sh        # lint + every test suite
 ├── docs/
-│   ├── architecture.drawio      # diagram source (draw.io)
-│   ├── architecture.png         # architecture diagram
+│   ├── inkwell-architecture.drawio  # diagram source (draw.io)
+│   ├── inkwell-architecture.png     # architecture diagram
 │   └── screenshots/
 └── source/
     ├── shared/                  # inkwell package used by every Lambda
