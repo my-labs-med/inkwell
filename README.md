@@ -46,9 +46,7 @@ completion becomes an ink dot on a 12-week calendar, and milestones (your first 
 
 # Demo
 
-[![Demo video](docs/demo-thumbnail.png)](#)
-
-*Video link to be added.*
+[Watch the demo video](#)
 
 # AWS Services
 
@@ -125,8 +123,8 @@ Every request is a single `Query` or key lookup, never a `Scan`.
 │   ├── build-dist.sh            # packages the Lambda zips and the X-Ray layer
 │   └── run-unit-tests.sh        # lint + every test suite
 ├── docs/
+│   ├── architecture.drawio      # diagram source (draw.io)
 │   ├── architecture.png         # architecture diagram
-│   ├── demo-thumbnail.png       # video thumbnail
 │   └── screenshots/
 └── source/
     ├── shared/                  # inkwell package used by every Lambda

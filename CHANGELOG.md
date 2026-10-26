@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Terraform for the full stack under `source/infrastructure`: a reusable Lambda module, a REST API with Cognito authorizer and an optional per-user stats cache, edge and origin WAF web ACLs, CloudFront with cache and security header policies, alarms, a dead-letter queue and a budget
 - Offline Terraform tests against mocked providers
 - X-Ray sampling rule that traces every Inkwell request
+- Architecture diagram with its draw.io source
 
 ### Changed
 
