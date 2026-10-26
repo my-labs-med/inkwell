@@ -11,7 +11,6 @@ WAF, accelerated by CloudFront and API Gateway caching, and traced end-to-end wi
 
 - [Solution Overview](#solution-overview)
 - [Architecture Diagram](#architecture-diagram)
-- [Demo](#demo)
 - [AWS Services](#aws-services)
 - [API](#api)
 - [Data Model](#data-model)
@@ -43,10 +42,6 @@ completion becomes an ink dot on a 12-week calendar, and milestones (your first 
 6. **Lambda** runs the route's logic against the **DynamoDB** `tasks` table, scoped to the caller's user ID.
 7. **DynamoDB Streams** delivers each task change to the stream processor, which updates the `stats` table and sends milestone emails through **SES**.
 8. **X-Ray** traces API Gateway → Lambda → DynamoDB / SES / Cognito.
-
-# Demo
-
-[Watch the demo video](#)
 
 # AWS Services
 
