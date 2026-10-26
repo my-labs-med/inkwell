@@ -7,6 +7,8 @@ own tasks through API Gateway and AWS Lambda, with data in Amazon DynamoDB. A Dy
 keeps each user's streak and sends milestone emails through Amazon SES. The API is protected by AWS
 WAF, accelerated by CloudFront and API Gateway caching, and traced end-to-end with AWS X-Ray.
 
+**Live app:** https://dvbqb6alr9byb.cloudfront.net/
+
 ## Table of Contents
 
 - [Solution Overview](#solution-overview)
